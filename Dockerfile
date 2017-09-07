@@ -55,5 +55,12 @@ RUN pip install kernda --no-cache && \
 
 USER $NB_USER
 
-RUN conda install -n python2 --quiet --yes -c zane.shelby \
+# install the probcomp libraries
+RUN conda install -n python2 --quiet --yes -c probcomp \
     'cgpm'
+
+ENV             CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
+ADD             docker-entrypoint.sh /usr/bin
+
+ENTRYPOINT      ["docker-entrypoint.sh"]
+CMD             ["start-notebook.sh"]

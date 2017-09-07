@@ -1,0 +1,12 @@
+version: "3"
+volumes:
+  jupyter-data:
+    driver: local
+
+services:
+  jupyter:
+    build: .
+    ports:
+      - 8888:8888
+    volumes:
+      - jupyter-data:/home/jovyan/work:rw
