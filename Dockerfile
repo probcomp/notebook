@@ -57,7 +57,9 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp \
-    'cgpm'
+    'cgpm' && \
+    conda remove -n python2 --quiet --yes --force qt pyqt && \
+    conda clean -tipsy
 
 ENV             CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 ADD             docker-entrypoint.sh /usr/bin
