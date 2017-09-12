@@ -57,7 +57,8 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp \
-    'cgpm' && \
+    'cgpm' \
+    'crosscat' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
