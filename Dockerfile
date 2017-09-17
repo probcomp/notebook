@@ -61,7 +61,8 @@ RUN conda install -n python2 --quiet --yes -c probcomp \
     'cgpm' \
     'crosscat' \
     'cgpm' \
-    'iventure' && \
+    'iventure' \
+    'venture' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
