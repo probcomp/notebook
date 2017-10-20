@@ -60,7 +60,6 @@ RUN conda install -n python2 --quiet --yes -c probcomp \
     'bayeslite' \
     'cgpm' \
     'crosscat' \
-    'cgpm' \
     'iventure' \
     'venture' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
