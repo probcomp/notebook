@@ -57,9 +57,9 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp \
-    'bayeslite' \
+    'bayeslite=0.3.2rc1' \
     'cgpm' \
-    'crosscat' \
+    'crosscat=0.1.57rc1' \
     'iventure' \
     'venture' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
