@@ -56,12 +56,12 @@ RUN pip install kernda --no-cache && \
 USER $NB_USER
 
 # install the probcomp libraries
-RUN conda install -n python2 --quiet --yes -c probcomp \
-    'bayeslite=0.3.2rc1' \
-    'cgpm' \
-    'crosscat=0.1.57rc1' \
-    'iventure' \
-    'venture' && \
+RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
+    'bayeslite=0.3.2rc3' \
+    'cgpm=0.1.1rc1' \
+    'crosscat=0.1.57rc2' \
+    'iventure=0.2.1rc1' \
+    'venture=0.5.2rc2' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
