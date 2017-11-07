@@ -57,10 +57,10 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
-    'bayeslite=0.3.2rc3' \
-    'cgpm=0.1.1rc1' \
-    'crosscat=0.1.57rc2' \
-    'iventure=0.2.1rc1' \
+    'bayeslite=0.3.2rc6' \
+    'cgpm=0.1.1rc4' \
+    'crosscat=0.1.57rc4' \
+    'iventure=0.2.1rc6' \
     'venture=0.5.2rc2' && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
