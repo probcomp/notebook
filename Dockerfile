@@ -64,8 +64,8 @@ RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
-RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
-    conda clean -tipsy
+##RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
+##    conda clean -tipsy
 
 # uncomment this to use plain-vanilla apsw (we can't use conda to install because there isn't an old enough version available)
 RUN bash -c 'source activate python2 && pip install apsw'
