@@ -4,36 +4,34 @@ FROM jupyter/scipy-notebook:da2c5a4d00fa
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
 
 # Install Python 2 packages
-# Remove pyqt and qt pulled in for matplotlib since we're only ever going to
-# use notebook-friendly backends in these images
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
-    'nomkl' \
+    'beautifulsoup4=4.5.*' \
+    'bokeh=0.12*' \
+    'cloudpickle=0.2*' \
+    'cython=0.25*' \
+    'dill=0.2*' \
+    'h5py=2.7*' \
+    'hdf5=1.10.1' \
     'ipython=5.3*' \
     'ipywidgets=6.0*' \
-    'pandas=0.19*' \
+    'matplotlib=1.4.*' \
+    'nomkl' \
+    'numba=0.13*' \
     'numexpr=2.6*' \
-    'matplotlib=1.5*' \
-    'scipy=0.19*' \
-    'seaborn=0.7*' \
-    'scikit-learn=0.18*' \
-    'scikit-image=0.12*' \
-    'sympy=1.0*' \
-    'cython=0.25*' \
+    'numpy=1.8.*' \
+    'pandas=0.14*' \
     'patsy=0.4*' \
-    'statsmodels=0.8*' \
-    'cloudpickle=0.2*' \
-    'dill=0.2*' \
-    'numba=0.31*' \
-    'bokeh=0.12*' \
-    'hdf5=1.8.17' \
-    'h5py=2.6*' \
-    'sqlalchemy=1.1*' \
     'pyzmq' \
+    'scikit-image=0.10*' \
+    'scikit-learn=0.15*' \
+    'scipy=0.14*' \
+    'seaborn=0.7*' \
+    'six=1.10.*' \
+    'sqlalchemy=1.1*' \
+    'statsmodels=0.5.*' \
+    'sympy=1.0*' \
     'vincent=0.4.*' \
-    'beautifulsoup4=4.5.*' \
-    'xlrd' && \
-    conda remove -n python2 --quiet --yes --force qt pyqt && \
-    conda clean -tipsy
+    'xlrd'
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
@@ -58,18 +56,21 @@ USER $NB_USER
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
     'bayeslite=0.3.2rc6' \
-    'cgpm=0.1.1rc4' \
-    'crosscat=0.1.57rc4' \
-    'iventure=0.2.1rc6' \
-    'venture=0.5.2rc2' && \
-    conda remove -n python2 --quiet --yes --force qt pyqt && \
+    'cgpm=0.1.1rc5' \
+    'crosscat=0.1.57rc5' \
+    'iventure=0.2.1rc7' \
+    'venture=0.5.2rc2'
+
+# Remove pyqt and qt pulled in for matplotlib since we're only ever going to
+# use notebook-friendly backends in these images
+RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
 # uncomment this to use plain-vanilla apsw (we can't use conda to install because there isn't an old enough version available)
-RUN             bash -c 'source activate python2 && pip install apsw'
+RUN bash -c 'source activate python2 && pip install apsw'
 
-ENV             CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
-ADD             docker-entrypoint.sh /usr/bin
+ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
+COPY docker-entrypoint.sh /usr/bin
 
 ENTRYPOINT      ["docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]
