@@ -1,3 +1,4 @@
+# jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 FROM jupyter/scipy-notebook:da2c5a4d00fa
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
@@ -59,7 +60,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
     'cgpm=0.1.1rc5' \
     'crosscat=0.1.57rc5' \
     'iventure=0.2.1rc7' \
-    'venture=0.5.2rc2'
+    'venture=0.5.2rc4'
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
