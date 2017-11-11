@@ -66,8 +66,8 @@ RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
 # use notebook-friendly backends in these images
 ## this is broken with conda matplotlib 1.4.*, fixed in matplotlib >= 1.5.* anaconda package
 ## see: https://github.com/ContinuumIO/anaconda-issues/issues/1068
-##RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
-##    conda clean -tipsy
+##RUN conda remove -n python2 --quiet --yes --force qt pyqt
+RUN conda clean -tipsy
 
 # uncomment this to use plain-vanilla apsw (we can't use conda to install because there isn't an old enough version available)
 RUN bash -c 'source activate python2 && pip install apsw'
