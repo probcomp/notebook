@@ -56,6 +56,7 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
+    'apsw=3.9.3rc3' \
     'bayeslite=0.3.2rc7' \
     'cgpm=0.1.1rc8' \
     'crosscat=0.1.57rc6' \
@@ -66,9 +67,6 @@ RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
 # use notebook-friendly backends in these images
 RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
-
-# uncomment this to use plain-vanilla apsw (we can't use conda to install because there isn't an old enough version available)
-RUN bash -c 'source activate python2 && pip install apsw'
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 COPY docker-entrypoint.sh /usr/bin
