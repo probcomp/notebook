@@ -15,21 +15,21 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'hdf5=1.10.1' \
     'ipython=5.3*' \
     'ipywidgets=6.0*' \
-    'matplotlib=1.4.*' \
+    'matplotlib=1.5.*' \
     'nomkl' \
-    'numba=0.13*' \
+    'numba=0.31*' \
     'numexpr=2.6*' \
-    'numpy=1.8.*' \
-    'pandas=0.14*' \
+    'numpy=1.11.*' \
+    'pandas=0.18.*' \
     'patsy=0.4*' \
     'pyzmq' \
-    'scikit-image=0.10*' \
-    'scikit-learn=0.15*' \
-    'scipy=0.14*' \
-    'seaborn=0.7*' \
+    'scikit-image=0.12*' \
+    'scikit-learn=0.17.*' \
+    'scipy=0.17.*' \
+    'seaborn=0.7.*' \
     'six=1.10.*' \
     'sqlalchemy=1.1*' \
-    'statsmodels=0.5.*' \
+    'statsmodels=0.6.*' \
     'sympy=1.0*' \
     'vincent=0.4.*' \
     'xlrd'
@@ -39,8 +39,7 @@ RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
-ENV MPLBACKEND Agg
-RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
+RUN MPLBACKEND=Agg $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 
 USER root
 
@@ -57,18 +56,16 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
-    'bayeslite=0.3.2rc6' \
-    'cgpm=0.1.1rc5' \
-    'crosscat=0.1.57rc5' \
-    'iventure=0.2.1rc7' \
-    'venture=0.5.2rc4'
+    'bayeslite=0.3.2rc7' \
+    'cgpm=0.1.1rc8' \
+    'crosscat=0.1.57rc6' \
+    'iventure=0.2.1rc8' \
+    'venture=0.5.2rc5'
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
-## this is broken with conda matplotlib 1.4.*, fixed in matplotlib >= 1.5.* anaconda package
-## see: https://github.com/ContinuumIO/anaconda-issues/issues/1068
-##RUN conda remove -n python2 --quiet --yes --force qt pyqt
-RUN conda clean -tipsy
+RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
+    conda clean -tipsy
 
 # uncomment this to use plain-vanilla apsw (we can't use conda to install because there isn't an old enough version available)
 RUN bash -c 'source activate python2 && pip install apsw'
