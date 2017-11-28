@@ -55,13 +55,13 @@ RUN pip install kernda --no-cache && \
 USER $NB_USER
 
 # install the probcomp libraries
-RUN conda install -n python2 --quiet --yes -c probcomp/label/dev \
-    'apsw=3.9.3rc3' \
-    'bayeslite=0.3.2rc7' \
-    'cgpm=0.1.1rc8' \
-    'crosscat=0.1.57rc6' \
-    'iventure=0.2.1rc8' \
-    'venture=0.5.2rc5'
+RUN conda install -n python2 --quiet --yes -c probcomp \
+    'apsw' \
+    'bayeslite=0.3.1.1' \
+    'cgpm=0.1.1' \
+    'crosscat=0.1.56.1' \
+    'iventure=0.2.1' \
+    'venture=0.5.1.1'
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
