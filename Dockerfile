@@ -52,6 +52,16 @@ RUN pip install kernda --no-cache && \
     kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json && \
     pip uninstall kernda -y
 
+# install loom apt dependencies
+RUN apt-get update -qq \
+    && apt-get install -qq -y \
+    cmake \
+    libboost-python-dev \
+    libeigen3-dev \
+    libgoogle-perftools-dev \
+    libprotobuf-dev \
+    protobuf-compiler
+
 USER $NB_USER
 
 # install the probcomp libraries
@@ -67,6 +77,20 @@ RUN conda install -n python2 --quiet --yes -c probcomp \
 # use notebook-friendly backends in these images
 RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
+
+# install loom
+ENV DISTRIBUTIONS_USE_PROTOBUF=1
+RUN mkdir deps \
+    && cd deps \
+    && git clone https://github.com/posterior/distributions.git \
+    && git clone https://github.com/posterior/loom.git
+
+RUN bash -c "source activate python2 \
+    && pip install -I cpplint \
+    && cd $HOME/deps/distributions \
+    && make install \
+    && cd $HOME/deps/loom \
+    && make install"
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 COPY docker-entrypoint.sh /usr/bin
