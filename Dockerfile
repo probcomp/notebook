@@ -22,6 +22,7 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'numpy=1.11.*' \
     'pandas=0.18.*' \
     'patsy=0.4*' \
+    'pyflakes' \
     'pyzmq' \
     'scikit-image=0.12*' \
     'scikit-learn=0.17.*' \
@@ -59,6 +60,12 @@ RUN apt-get update -qq \
     libboost-python-dev \
     libeigen3-dev \
     libgoogle-perftools-dev \
+    python-software-properties \
+    software-properties-common
+
+RUN add-apt-repository ppa:maarten-fonville/protobuf \
+    && apt-get update -qq \
+    && apt-get install -qq -y \
     libprotobuf-dev \
     protobuf-compiler
 
@@ -85,12 +92,12 @@ RUN mkdir deps \
     && git clone https://github.com/posterior/distributions.git \
     && git clone https://github.com/posterior/loom.git
 
-RUN bash -c "source activate python2 \
-    && pip install -I cpplint \
-    && cd $HOME/deps/distributions \
-    && make install \
-    && cd $HOME/deps/loom \
-    && make install"
+##RUN bash -c "source activate python2 \
+##    && pip install -I cpplint \
+##    && cd $HOME/deps/distributions \
+##    && make install \
+##    && cd $HOME/deps/loom \
+##    && make install"
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 COPY docker-entrypoint.sh /usr/bin
