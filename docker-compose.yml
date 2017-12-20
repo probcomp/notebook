@@ -6,7 +6,10 @@ volumes:
 services:
   notebook:
     build: .
+    user: root
     ports:
       - 8888:8888
     volumes:
       - notebook-data:/home/jovyan/work:rw
+    environment:
+      GRANT_SUDO: 'yes'

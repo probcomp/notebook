@@ -9,8 +9,10 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'beautifulsoup4=4.5.*' \
     'bokeh=0.12*' \
     'cloudpickle=0.2*' \
+    'cmake' \
     'cython=0.25*' \
     'dill=0.2*' \
+    'eigen' \
     'h5py=2.7*' \
     'hdf5=1.10.1' \
     'ipython=5.3*' \
@@ -23,6 +25,7 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'pandas=0.18.*' \
     'patsy=0.4*' \
     'pyflakes' \
+    'protobuf' \
     'pyzmq' \
     'scikit-image=0.12*' \
     'scikit-learn=0.17.*' \
@@ -54,20 +57,16 @@ RUN pip install kernda --no-cache && \
     pip uninstall kernda -y
 
 # install loom apt dependencies
-RUN apt-get update -qq \
-    && apt-get install -qq -y \
-    cmake \
-    libboost-python-dev \
-    libeigen3-dev \
-    libgoogle-perftools-dev \
-    python-software-properties \
-    software-properties-common
+##RUN apt-get update -qq \
+##    && apt-get install -qq -y \
+##    python-software-properties \
+##    software-properties-common
 
-RUN add-apt-repository ppa:maarten-fonville/protobuf \
-    && apt-get update -qq \
-    && apt-get install -qq -y \
-    libprotobuf-dev \
-    protobuf-compiler
+##RUN add-apt-repository ppa:maarten-fonville/protobuf \
+##    && apt-get update -qq \
+##    && apt-get install -qq -y \
+##    libprotobuf-dev \
+##    protobuf-compiler
 
 USER $NB_USER
 
