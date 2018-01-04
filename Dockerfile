@@ -9,7 +9,6 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'beautifulsoup4=4.5.*' \
     'bokeh=0.12*' \
     'cloudpickle=0.2*' \
-    'cmake' \
     'cython=0.25*' \
     'dill=0.2*' \
     'eigen' \
@@ -25,7 +24,6 @@ RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     'pandas=0.18.*' \
     'patsy=0.4*' \
     'pyflakes' \
-    'protobuf' \
     'pyzmq' \
     'scikit-image=0.12*' \
     'scikit-learn=0.17.*' \
@@ -56,18 +54,6 @@ RUN pip install kernda --no-cache && \
     kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json && \
     pip uninstall kernda -y
 
-# install loom apt dependencies
-##RUN apt-get update -qq \
-##    && apt-get install -qq -y \
-##    python-software-properties \
-##    software-properties-common
-
-##RUN add-apt-repository ppa:maarten-fonville/protobuf \
-##    && apt-get update -qq \
-##    && apt-get install -qq -y \
-##    libprotobuf-dev \
-##    protobuf-compiler
-
 USER $NB_USER
 
 # install the probcomp libraries
@@ -76,6 +62,8 @@ RUN conda install -n python2 --quiet --yes -c probcomp \
     'bayeslite=0.3.1.1' \
     'cgpm=0.1.1' \
     'crosscat=0.1.56.1' \
+    'distributions=2.2.1' \
+    'libprotobuf=2.6.1' \
     'iventure=0.2.1' \
     'venture=0.5.1.1'
 
@@ -83,20 +71,6 @@ RUN conda install -n python2 --quiet --yes -c probcomp \
 # use notebook-friendly backends in these images
 RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
-
-# install loom
-ENV DISTRIBUTIONS_USE_PROTOBUF=1
-RUN mkdir deps \
-    && cd deps \
-    && git clone https://github.com/posterior/distributions.git \
-    && git clone https://github.com/posterior/loom.git
-
-##RUN bash -c "source activate python2 \
-##    && pip install -I cpplint \
-##    && cd $HOME/deps/distributions \
-##    && make install \
-##    && cd $HOME/deps/loom \
-##    && make install"
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 COPY docker-entrypoint.sh /usr/bin
