@@ -57,16 +57,16 @@ RUN pip install kernda --no-cache && \
 USER $NB_USER
 
 # install the probcomp libraries
-RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
+RUN conda install -n python2 --quiet --yes -c probcomp/label/edge -c cidermole -c fritzo -c ursusest \
     'apsw' \
-    'bayeslite=0.3.2' \
-    'cgpm=0.1.2' \
-    'crosscat=0.1.56.1' \
-    'distributions=2.2.1' \
+    'bayeslite' \
+    'cgpm' \
+    'crosscat' \
+    'distributions' \
     'libprotobuf=2.6.1' \
-    'loom=0.2.10' \
-    'iventure=0.2.2' \
-    'venture=0.5.1.1'
+    'loom' \
+    'iventure' \
+    'venture'
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
