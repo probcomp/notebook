@@ -4,12 +4,11 @@ set -e
 # activate python2 environment
 source activate python2
 
-#cp -r /branding ~/.jupyter/custom
-if [ ! -f ~/work/satellites-predictive.ipynb ]; then
-  mkdir -p ~/tmp
-  cd ~/tmp && wget --progress=dot:giga -O - https://${CONTENT_URL} | gunzip -c | tar xf -
-  mv ~/tmp/notebook/* ~/work/
-  rm -r ~/tmp
+# only download workshop materials if default command has not been overridden
+if [ $1 = "start-notebook.sh" ]; then
+  if [ ! -f ~/work/satellites-predictive.ipynb ]; then
+    cd ~/work && wget --progress=dot:giga -O - https://${CONTENT_URL} | gunzip -c | tar xf -
+  fi
 fi
 
 cd ~

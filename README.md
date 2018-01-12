@@ -15,9 +15,13 @@ wget https://raw.githubusercontent.com/probcomp/notebook/master/docker-compose.y
 ## docker
 
 Or run the image directly:
-
 ```
 docker run -it --rm -p 8888:8888 probcomp/notebook
+```
+
+Alternately, you can run an ipython shell:
+```
+docker run -it --rm probcomp/notebook start.sh ipython
 ```
 
 # Further Reading

@@ -1,0 +1,25 @@
+/* header - notebook */
+
+#ipython_notebook img{
+    display:block;
+    background: url(logo.png) no-repeat;
+    background-size: contain;
+    width: auto;
+    height: 2em;
+    padding-left: 300em;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#ipython-main-app.container::before{
+	padding-top: 1.5em;
+	content: "Welcome to your MIT probcomp web server!";
+}
+
+#tab_content.tabbable::before{
+	content: "This is a Jupyter notebook server prepopulated with some resources to get you started with BayesDB. Click on \"introduction.ipynb\" below for an overview.";
+}
+
+#tabs.nav.nav-tabs::before{
+	padding-top: 1.5em;
+}

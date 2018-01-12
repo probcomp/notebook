@@ -54,6 +54,10 @@ RUN pip install kernda --no-cache && \
     kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json && \
     pip uninstall kernda -y
 
+# add custom css/logo
+COPY custom/ /home/$NB_USER/.jupyter/custom/
+RUN  chown -R $NB_USER:users /home/$NB_USER/.jupyter
+
 USER $NB_USER
 
 # install the probcomp libraries
@@ -73,7 +77,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c
 RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
-ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
+ENV CONTENT_URL probcomp-workshop-materials.s3.amazonaws.com/latest.tgz
 COPY docker-entrypoint.sh /usr/bin
 
 ENTRYPOINT      ["docker-entrypoint.sh"]
