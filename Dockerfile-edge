@@ -1,40 +1,15 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 FROM jupyter/scipy-notebook:da2c5a4d00fa
 
+COPY files/docker-entrypoint.sh /usr/bin
+COPY files/*.txt /tmp/
+
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
 
 # Install Python 2 packages
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
-    'beautifulsoup4=4.5.*' \
-    'bokeh=0.12*' \
-    'cloudpickle=0.2*' \
-    'cython=0.25*' \
-    'dill=0.2*' \
-    'eigen=3.3.*' \
-    'h5py=2.7*' \
-    'hdf5=1.10.1' \
-    'ipython=5.3*' \
-    'ipywidgets=6.0*' \
-    'matplotlib=1.5.*' \
-    'nomkl' \
-    'numba=0.31*' \
-    'numexpr=2.6*' \
-    'numpy=1.11.*' \
-    'pandas=0.18.*' \
-    'patsy=0.4*' \
-    'pyflakes' \
-    'pyzmq' \
-    'scikit-image=0.12*' \
-    'scikit-learn=0.17.*' \
-    'scipy=0.17.*' \
-    'seaborn=0.7.*' \
-    'six=1.10.*' \
-    'sqlalchemy=1.1*' \
-    'statsmodels=0.6.*' \
-    'sympy=1.0*' \
-    'vincent=0.4.*' \
-    'xlrd'
+    --file /tmp/conda_python2.txt
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
@@ -54,19 +29,15 @@ RUN pip install kernda --no-cache && \
     kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json && \
     pip uninstall kernda -y
 
+# add custom css/logo
+COPY files/custom/ /home/$NB_USER/.jupyter/custom/
+RUN  chown -R $NB_USER:users /home/$NB_USER/.jupyter
+
 USER $NB_USER
 
 # install the probcomp libraries
-RUN conda install -n python2 --quiet --yes -c probcomp/label/edge -c cidermole -c fritzo -c ursusest \
-    'apsw' \
-    'bayeslite' \
-    'cgpm' \
-    'crosscat' \
-    'distributions' \
-    'libprotobuf=2.6.1' \
-    'loom' \
-    'iventure' \
-    'venture'
+RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
+    --file /tmp/conda_probcomp_edge.txt
 
 # Remove pyqt and qt pulled in for matplotlib since we're only ever going to
 # use notebook-friendly backends in these images
@@ -74,7 +45,6 @@ RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
-COPY docker-entrypoint.sh /usr/bin
 
 ENTRYPOINT      ["docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]

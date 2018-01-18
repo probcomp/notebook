@@ -1,0 +1,9 @@
+apsw
+bayeslite=0.3.2
+cgpm=0.1.2
+crosscat=0.1.56.1
+distributions=2.2.1
+iventure=0.2.2
+libprotobuf=2.6.1
+loom=0.2.10
+venture=0.5.1.1

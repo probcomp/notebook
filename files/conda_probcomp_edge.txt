@@ -1,0 +1,9 @@
+apsw
+bayeslite
+cgpm
+crosscat
+distributions
+iventure
+libprotobuf
+loom
+venture
