@@ -17,7 +17,7 @@ $ wget https://raw.githubusercontent.com/probcomp/notebook/master/docker-compose
 $ docker-compose up
 ```
 
-__Method 2__: Using docker directly.
+__Method 2__: Using docker directly
 
 Or run the image directly:
 
