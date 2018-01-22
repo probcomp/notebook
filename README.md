@@ -23,7 +23,3 @@ Alternately, you can run an ipython shell:
 ```
 docker run -it --rm probcomp/notebook start.sh ipython
 ```
-
-# Further Reading
-
-See [Richard Tibbetts's talk at Strange Loop](https://www.youtube.com/watch?v=7_m7JCLKmTY) for a walkthrough of the example satellite dataset included in this image.
