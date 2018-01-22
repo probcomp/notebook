@@ -20,11 +20,13 @@ $ docker-compose up
 __Method 2__: Using docker directly.
 
 Or run the image directly:
+
 ```
 $ docker run -it --rm -p 8888:8888 probcomp/notebook
 ```
 
 Alternately, you can run an ipython shell:
+
 ```
 $ docker run -it --rm probcomp/notebook start.sh ipython
 ```
