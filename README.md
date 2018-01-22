@@ -1,12 +1,16 @@
 ## Overview
 
-[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/) with [MIT Probabilistic Computing Project](http://probcomp.org/) libraries. See the [jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/) repo's documentaiton for various runtime options.
+[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/) with
+[MIT Probabilistic Computing Project](http://probcomp.org/) libraries. See the
+[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/)
+repo's documentaiton for various runtime options.
 
 ## Quickstart:
 
 __Method 1__: Using docker-compose
 
-The easiest method to run the image for end-user consumption is with the included [docker-compose file](https://github.com/probcomp/notebook/blob/master/docker-compose.yml):
+The easiest method to run the image for end-user consumption is with the
+included [docker-compose file](https://github.com/probcomp/notebook/blob/master/docker-compose.yml):
 
 ```
 $ wget https://raw.githubusercontent.com/probcomp/notebook/master/docker-compose.yml
