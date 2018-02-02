@@ -33,7 +33,8 @@ RUN pip install kernda --no-cache && \
 
 # add custom css/logo
 COPY files/custom/ /home/$NB_USER/.jupyter/custom/
-RUN  chown -R $NB_USER:users /home/$NB_USER/.jupyter
+RUN  chown -R $NB_USER:users /home/$NB_USER/.jupyter && \
+     chown $NB_USER:users /tmp/*.txt
 
 USER $NB_USER
 
