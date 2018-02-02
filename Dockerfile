@@ -17,7 +17,8 @@ RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
 
 # Import matplotlib the first time to build the font cache.
 ENV XDG_CACHE_HOME /home/$NB_USER/.cache/
-RUN MPLBACKEND=Agg $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
+ENV MPLBACKEND=Agg
+RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 
 USER root
 
