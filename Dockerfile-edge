@@ -9,7 +9,8 @@ COPY files/*.txt /tmp/
 
 # Install Python 2 packages
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
-    --file /tmp/conda_python2.txt
+    --file /tmp/conda_python2.txt && \
+    conda remove -n python2 --quiet --yes --force qt pyqt
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
@@ -37,11 +38,8 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp/label/edge -c cidermole -c fritzo -c ursusest \
-    --file /tmp/conda_probcomp_edge.txt
-
-# Remove pyqt and qt pulled in for matplotlib since we're only ever going to
-# use notebook-friendly backends in these images
-RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
+    --file /tmp/conda_probcomp_edge.txt && \
+    conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz

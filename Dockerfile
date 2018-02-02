@@ -1,7 +1,7 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 FROM jupyter/scipy-notebook:da2c5a4d00fa
 
-COPY files/docker-entrypoint.sh /usr/bin
+COPY files/docker-entrypoint.sh /usr/local/bin/
 COPY files/*.txt /tmp/
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
@@ -9,7 +9,8 @@ COPY files/*.txt /tmp/
 
 # Install Python 2 packages
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
-    --file /tmp/conda_python2.txt
+    --file /tmp/conda_python2.txt && \
+    conda remove -n python2 --quiet --yes --force qt pyqt
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
@@ -37,14 +38,11 @@ USER $NB_USER
 
 # install the probcomp libraries
 RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
-    --file /tmp/conda_probcomp.txt
-
-# Remove pyqt and qt pulled in for matplotlib since we're only ever going to
-# use notebook-friendly backends in these images
-RUN conda remove -n python2 --quiet --yes --force qt pyqt && \
+    --file /tmp/conda_probcomp.txt && \
+    conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
 ENV CONTENT_URL probcomp-workshop-materials.s3.amazonaws.com/latest.tgz
 
-ENTRYPOINT      ["docker-entrypoint.sh"]
+ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]
