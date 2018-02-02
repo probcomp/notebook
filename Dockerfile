@@ -43,6 +43,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
+RUN echo "source activate python2" >> /home/$NB_USER/.bashrc
 ENV CONTENT_URL probcomp-workshop-materials.s3.amazonaws.com/latest.tgz
 
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
