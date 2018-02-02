@@ -44,7 +44,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp/label/edge -c cidermole -
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy
 
-RUN echo "source activate python2" >> /home/$NB_USER/.bashrc
+RUN echo "source activate python2\nalias pytest=py.test" >> /home/$NB_USER/.bashrc
 ENV CONTENT_URL probcomp-oreilly20170627.s3.amazonaws.com/content-package.tgz
 
 ENTRYPOINT      ["docker-entrypoint.sh"]
