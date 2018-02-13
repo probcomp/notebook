@@ -3,6 +3,8 @@ FROM jupyter/scipy-notebook:da2c5a4d00fa
 
 COPY files/docker-entrypoint.sh /usr/local/bin/
 COPY files/*.txt /tmp/
+COPY test/ /home/$NB_USER/test/
+COPY work/ /home/$NB_USER/work/
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
@@ -33,7 +35,7 @@ RUN pip install kernda --no-cache && \
 
 # add custom css/logo
 COPY files/custom/ /home/$NB_USER/.jupyter/custom/
-RUN  chown -R $NB_USER:users /home/$NB_USER/.jupyter && \
+RUN  chown -R $NB_USER:users /home/$NB_USER && \
      chown $NB_USER:users /tmp/*.txt
 
 USER $NB_USER
