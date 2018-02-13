@@ -1,12 +1,7 @@
-version: "3"
-volumes:
-  notebook-data:
-    driver: local
+version: "2"
 
 services:
   notebook:
     image: probcomp/notebook
     ports:
       - 8888:8888
-    volumes:
-      - notebook-data:/home/jovyan/work:rw
