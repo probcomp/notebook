@@ -3,7 +3,6 @@ FROM jupyter/scipy-notebook:da2c5a4d00fa
 
 COPY files/docker-entrypoint.sh /usr/local/bin/
 COPY files/*.txt /tmp/
-COPY test/ /home/$NB_USER/test/
 COPY work/ /home/$NB_USER/work/
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide

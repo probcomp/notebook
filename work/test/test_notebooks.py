@@ -6,7 +6,7 @@ from contextlib import contextmanager
 
 import pytest
 
-NOTEBOOKS_DIRECTORY = 'work'
+NOTEBOOKS_DIRECTORY = '.'
 
 IGNORED_NOTEBOOKS = [
     'goal-inference-part1.ipynb',
@@ -39,7 +39,7 @@ notebooks = find_notebooks(NOTEBOOKS_DIRECTORY, IGNORED_NOTEBOOKS)
 
 @pytest.mark.parametrize('notebook', notebooks)
 def test_population_assembly(notebook):
-    with working_directory(NOTEBOOKS_DIRECTORY):
+    with working_directory('.'):
         subprocess.check_call([
             'jupyter',
             'nbconvert',
