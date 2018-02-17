@@ -1,5 +1,5 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
-FROM jupyter/scipy-notebook:da2c5a4d00fa
+FROM jupyter/scipy-notebook:9faed6a154bb
 
 COPY files/*.txt /tmp/
 COPY tutorials/ /home/$NB_USER/tutorials/
@@ -9,8 +9,7 @@ COPY tutorials/ /home/$NB_USER/tutorials/
 
 # Install Python 2 packages
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
-    --file /tmp/conda_python2.txt && \
-    conda remove -n python2 --quiet --yes --force qt pyqt
+    --file /tmp/conda_python2.txt
 # Add shortcuts to distinguish pip for python2 and python3 envs
 RUN ln -s $CONDA_DIR/envs/python2/bin/pip $CONDA_DIR/bin/pip2 && \
     ln -s $CONDA_DIR/bin/pip $CONDA_DIR/bin/pip3
@@ -34,7 +33,7 @@ RUN pip install kernda --no-cache && \
 # add custom css/logo
 COPY files/custom/ /home/$NB_USER/.jupyter/custom/
 RUN  chown -R $NB_USER:users /home/$NB_USER && \
-     chown $NB_USER:users /tmp/*.txt
+     chmod 666 /tmp/*.txt
 
 USER $NB_USER
 
@@ -42,13 +41,14 @@ USER $NB_USER
 RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
     --file /tmp/conda_probcomp.txt && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
-    conda clean -tipsy
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
 RUN echo "source activate python2\nalias pytest=py.test" >> /home/$NB_USER/.bashrc
 
 # Add local files as late as possible to avoid cache busting
 COPY files/docker-entrypoint.sh /usr/local/bin/
-COPY files/start.sh /usr/local/bin/
 
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]
