@@ -17,7 +17,7 @@
 }
 
 #tab_content.tabbable::before{
-	content: "This is a Jupyter notebook server prepopulated with some resources to get you started with BayesDB. Click on \"introduction.ipynb\" below for an overview.";
+	content: "This is a Jupyter notebook server prepopulated with some resources to get you started with BayesDB. Click on \"introduction.ipynb\" in the tutorials directory below for an overview.";
 }
 
 #tabs.nav.nav-tabs::before{
