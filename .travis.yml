@@ -8,4 +8,4 @@ before_install:
   - docker build -t probcomp/notebook .
   - docker build -t probcomp/notebook:edge -f Dockerfile-edge .
 script:
-  - docker run probcomp/notebook sh -c 'cd tutorials && python -m pytest ${1+"$@"}' -- ${1+"$@"}
+  - travis wait 30 docker run probcomp/notebook bash -c "source activate python2 && cd tutorials && py.test"
