@@ -9,4 +9,4 @@ before_install:
   - docker build -t probcomp/notebook:edge -f Dockerfile-edge .
 script:
   - travis_wait 120 sleep infinity &
-  - docker run probcomp/notebook:edge bash -c "source activate python2 && cd tutorials && py.test -k 'test_population_assembly[satellites-predictive.ipynbd]'"
+  - docker run probcomp/notebook:edge bash -c "source activate python2 && cd tutorials && py.test -k 'test_population_assembly[satellites-predictive.ipynb]'"
