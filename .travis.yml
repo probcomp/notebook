@@ -9,6 +9,6 @@ before_install:
   - docker build -t probcomp/notebook:edge -f Dockerfile-edge .
 script:
   - docker run probcomp/notebook:edge bash -c "source activate python2 && cd tutorials && py.test -k 'test_population_assembly[introduction.ipynb]'"
-after_success:
+#after_success:
   # trigger a build of the edge image
-  - curl -H "Content-Type: application/json" --data '{"docker_tag": "edge"}' -X POST https://registry.hub.docker.com/u/probcomp/notebook/trigger/$DOCKER_HUB_TOKEN/
+  #- curl -H "Content-Type: application/json" --data '{"docker_tag": "edge"}' -X POST https://registry.hub.docker.com/u/probcomp/notebook/trigger/$DOCKER_HUB_TOKEN/
