@@ -8,7 +8,7 @@ before_install:
   - docker build -t probcomp/notebook .
   - docker build -t probcomp/notebook:edge -f Dockerfile-edge .
 script:
-  - docker run probcomp/notebook:edge bash -c "source activate python2 && cd tutorials && py.test -k 'test_population_assembly[introduction.ipynb]'"
+  - docker run probcomp/notebook:edge bash -c "source activate python2 && cd tutorials && python -m pytest -k 'test_population_assembly[introduction.ipynb]'"
 after_success:
   # trigger a build of the edge image
   - bash files/trigger-hub.sh

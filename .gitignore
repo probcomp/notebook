@@ -1,4 +1,6 @@
 *.bdb
 *.cache
 .ipynb_checkpoints
+*.nbconvert.*
+*.pyc
 __pycache__/
