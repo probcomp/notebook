@@ -6,7 +6,8 @@ USER root
 RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" \
     | debconf-set-selections && \
     apt-get -qy update && apt-get install -qy apt-transport-https htop less ttf-mscorefonts-installer && \
-    rm -rf /var/lib/apt/list/* /tmp/* /var/tmp/* /var/cache/apt/*
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER
 COPY files/*.txt /tmp/
