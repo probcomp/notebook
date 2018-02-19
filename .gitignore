@@ -1,4 +1,5 @@
 *.bdb
+*.bdb-journal
 *.cache
 .ipynb_checkpoints
 *.nbconvert.*
