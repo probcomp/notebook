@@ -48,7 +48,7 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     echo "source activate python2\nalias pytest=py.test\nexport SCM_CHECK=false" >> /home/$NB_USER/.bashrc
 
 # install the probcomp libraries, fix permissions
-COPY files/conda_probcomp*.txt /tmp/
+COPY files/conda_probcomp.txt /tmp/
 RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
     --file /tmp/conda_probcomp.txt && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
