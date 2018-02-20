@@ -1,15 +1,6 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 FROM jupyter/scipy-notebook:9faed6a154bb
 
-# install fonts used in some tutorials/tests. also, a couple random packages that are nice for dev environment.
-USER root
-RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" \
-    | debconf-set-selections && \
-    apt-get -qy update && apt-get install -qy apt-transport-https htop less ttf-mscorefonts-installer && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-USER $NB_USER
 COPY files/*.txt /tmp/
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
@@ -28,6 +19,11 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 
 USER root
 
+# install packages that are nice for dev environment.
+RUN apt-get -qy update && apt-get install -qy htop less && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install Python 2 kernel spec globally to avoid permission problems when NB_UID
 # switching at runtime and to allow the notebook server running out of the root
 # environment to find it. Also, activate the python2 environment upon kernel
@@ -42,7 +38,7 @@ COPY files/custom/ /home/$NB_USER/.jupyter/custom/
 COPY tutorials/ /home/$NB_USER/tutorials/
 
 # need to run this here so the fix-permissions script succeeds later
-RUN chown -R $NB_USER $CONDA_DIR/var/cache/fontconfig && \
+RUN chown -R $NB_USER $CONDA_DIR/var/cache && \
     chown -R $NB_USER /home/$NB_USER
 
 USER $NB_USER
