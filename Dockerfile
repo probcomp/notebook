@@ -1,11 +1,10 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 FROM jupyter/scipy-notebook:9faed6a154bb
 
-COPY files/*.txt /tmp/
-
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
 # Install Python 2 packages
+COPY files/conda_python2.txt /tmp/
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
     --file /tmp/conda_python2.txt
 # Add shortcuts to distinguish pip for python2 and python3 envs
@@ -49,6 +48,7 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     echo "source activate python2\nalias pytest=py.test\nexport SCM_CHECK=false" >> /home/$NB_USER/.bashrc
 
 # install the probcomp libraries, fix permissions
+COPY files/conda_probcomp*.txt /tmp/
 RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
     --file /tmp/conda_probcomp.txt && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
