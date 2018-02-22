@@ -17,7 +17,7 @@ if [ $1 = "start-notebook.sh" ]; then
       echo "  Building $repo"
       bash -c "cd /home/$NB_USER/$repo && rm -rf build && python setup.py build" >/dev/null 2>&1
       if [ $(id -u) == 0 ] ; then
-        chown -R $NB_UID /home/$NB_USER/$repo /opt/conda/envs/python2/lib/python2.7/site-packages/*.egg-link /opt/conda/envs/python2/lib/python2.7/site-packages/*.pth
+        chown -R $NB_UID /home/$NB_USER/$repo /opt/conda/envs/python2/lib/python2.7/site-packages/*.egg-link /opt/conda/envs/python2/lib/python2.7/site-packages/*.pth /opt/conda/pkgs/cache
       fi
     done
   fi
