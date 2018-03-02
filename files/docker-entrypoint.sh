@@ -12,8 +12,11 @@ if [ $1 = "start-notebook.sh" ]; then
       echo "  Uninstalling $repo conda package"
       conda uninstall --quiet --yes $repo >/dev/null 2>&1
       echo "  Creating $repo.egg-link"
-      echo -e "/home/$NB_USER/$repo/build/lib\n." > /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
-      echo "/home/$NB_USER/$repo/build/lib"  >>  /opt/conda/envs/python2/lib/python2.7/site-packages/easy-install.pth
+      echo "/home/$NB_USER/$repo/build/lib"                   > /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
+      echo "/home/$NB_USER/$repo/build/lib.linux-x86_64-2.7" >> /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
+      echo "."                                               >> /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
+      echo "/home/$NB_USER/$repo/build/lib"                  >> /opt/conda/envs/python2/lib/python2.7/site-packages/easy-install.pth
+      echo "/home/$NB_USER/$repo/build/lib.linux-x86_64-2.7" >> /opt/conda/envs/python2/lib/python2.7/site-packages/easy-install.pth
       echo "  Building $repo"
       bash -c "cd /home/$NB_USER/$repo && rm -rf build && python setup.py build" >/dev/null 2>&1
       if [ $(id -u) == 0 ] ; then
