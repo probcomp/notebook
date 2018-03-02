@@ -1,6 +1,7 @@
 beautifulsoup4=4.5.*
 bokeh=0.12*
 cloudpickle=0.2*
+cmake
 cython=0.25*
 dill=0.2*
 eigen=3.3.*
