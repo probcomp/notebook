@@ -1,8 +1,8 @@
 ## Overview
 
-[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/) with
+[jupyter/minimal-notebook](https://hub.docker.com/r/jupyter/minimal-notebook/) with
 [MIT Probabilistic Computing Project](http://probcomp.org/) libraries. See the
-[jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook/)
+[jupyter/minimal-notebook](https://hub.docker.com/r/jupyter/minimal-notebook/)
 repo's documentaiton for various runtime options.
 
 ## Quickstart:
