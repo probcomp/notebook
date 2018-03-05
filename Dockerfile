@@ -3,6 +3,10 @@ FROM jupyter/minimal-notebook:92fe05d1e7e5
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
+
+# install conda-build into the root environment. useful for reproducing travis runs.
+RUN conda install --quiet --yes conda-build
+
 # Install Python 2 packages
 COPY files/conda_python2.txt /tmp/
 RUN conda create --quiet --yes -p $CONDA_DIR/envs/python2 python=2.7 \
