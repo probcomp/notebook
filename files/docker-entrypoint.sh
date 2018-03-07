@@ -4,7 +4,7 @@ set -e
 # activate python2 environment
 source activate python2
 
-# only download workshop materials if default command has not been overridden
+# only initialize if default command has not been overridden
 if [ $1 = "start-notebook.sh" ]; then
   if [ -n "$DEVELOP_REPOS" ]; then
     echo "Enabling develop on: $DEVELOP_REPOS"
@@ -23,6 +23,12 @@ if [ $1 = "start-notebook.sh" ]; then
         chown -R $NB_UID /home/$NB_USER/$repo /opt/conda/envs/python2/lib/python2.7/site-packages/*.egg-link /opt/conda/envs/python2/lib/python2.7/site-packages/*.pth /opt/conda/pkgs/cache
       fi
     done
+  fi
+  echo "Trusting tutorial notebooks"
+  if [ $(id -u) == 0 ] ; then
+    sudo -u $NB_USER -E /opt/conda/envs/python2/bin/jupyter trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
+  else
+    /opt/conda/envs/python2/bin/jupyter trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
   fi
 fi
 
