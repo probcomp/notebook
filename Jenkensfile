@@ -12,9 +12,9 @@ node {
     stage ('Clone') {
       checkout scm
     }
-    stage('Build') {
+    stage('Build Edge') {
       steps {
-          sh './files/docker-build.sh'
+          sh './files/docker-build-edge.sh'
       }
     }
     stage('Test') {
