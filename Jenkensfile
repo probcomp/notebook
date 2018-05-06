@@ -1,0 +1,36 @@
+node {
+  def PROJECT_NAME = "notebook-master-crashes"
+
+  environment {
+    DOCKER_HUB_TOKEN = credentials('docker-hub-token')
+  }
+
+  // Clean workspace before doing anything
+  deleteDir()
+
+  try {
+    stage ('Clone') {
+      checkout scm
+    }
+    stage('Build') {
+      steps {
+          sh './files/docker-build.sh'
+      }
+    }
+    stage('Test') {
+      steps {
+          sh './files/docker-test.sh'
+      }
+    }
+    stage('Trigger Hub') {
+      steps {
+          sh './files/docker-trigger-hub.sh'
+      }
+    }
+  }
+  catch (err) {
+    currentBuild.result = 'FAILED'
+    notifyFailed()
+    throw err
+  }
+}
