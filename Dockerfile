@@ -62,5 +62,8 @@ RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c
 # Add local files as late as possible to avoid cache busting
 COPY files/docker-entrypoint.sh /usr/local/bin/
 
+# Make installing pip packages in child images more intuitive
+ENV PATH $CONDA_DIR/envs/python2/bin:$PATH
+
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]
