@@ -1,0 +1,2 @@
+FROM probcomp/notebook
+RUN pip install aumbry falcon-cors snaql alchemize
