@@ -28,10 +28,10 @@ if [ $1 = "start-notebook.sh" ]; then
   if [ -f /home/$NB_USER/tutorials/introduction.ipynb ]; then
     echo "Trusting tutorial notebooks"
     if [ $(id -u) == 0 ] ; then
-      sudo -u $NB_USER -E /opt/conda/envs/python2/bin/jupyter trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
+      sudo -u $NB_USER -E /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
       chown -R $NB_UID /home/$NB_USER/.local
     else
-      /opt/conda/envs/python2/bin/jupyter trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
+      /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
     fi
   fi
 fi
