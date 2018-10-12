@@ -1,5 +1,5 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
-FROM jupyter/minimal-notebook:137a295ff71b
+FROM jupyter/minimal-notebook:92fe05d1e7e5
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
@@ -42,9 +42,6 @@ COPY tutorials/ /home/$NB_USER/tutorials/
 
 # need to run this here so the fix-permissions script succeeds later
 RUN chown -R $NB_USER /home/$NB_USER
-
-# fix for https://github.com/jupyter/docker-stacks/issues/718
-RUN sed -i "s/c.NotebookApp.ip = '\*'/c.NotebookApp.ip = '0.0.0.0'/" /etc/jupyter/jupyter_notebook_config.py
 
 USER $NB_USER
 
