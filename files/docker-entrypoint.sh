@@ -26,8 +26,10 @@ if [ $1 = "start-notebook.sh" ]; then
   fi
   # add the logo, etc.
   rsync -aq /usr/local/etc/skel/jupyter/.jupyter/custom /home/$NB_USER/.jupyter/
-  # rsync tutorials from skeleton directory if they don't exist
-  if [ ! -f /home/$NB_USER/tutorials/introduction.ipynb ]; then
+  # rsync tutorials from skeleton directory unless $SKIP_TUTORIAL_SYNC is set
+  if [[ "$SKIP_TUTORIAL_SYNC" == "1" || "$SKIP_TUTORIAL_SYNC" == 'yes' ]]; then
+    echo "Skipping tutorial notebook sync"
+  else
     echo "Syncing tutorial notebooks"
     rsync -aq /usr/local/etc/skel/jupyter/tutorials /home/$NB_USER/
   fi
