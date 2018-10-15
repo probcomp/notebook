@@ -24,15 +24,19 @@ if [ $1 = "start-notebook.sh" ]; then
       fi
     done
   fi
-  # check that at least the intro notebook exists in case users have mounted a non-standard directory into tutorials
-  if [ -f /home/$NB_USER/tutorials/introduction.ipynb ]; then
-    echo "Trusting tutorial notebooks"
-    if [ $(id -u) == 0 ] ; then
-      sudo -u $NB_USER -E /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
-      chown -R $NB_UID /home/$NB_USER/.local
-    else
-      /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
-    fi
+  # add the logo, etc.
+  rsync -aq /usr/local/etc/skel/jupyter/.jupyter/custom /home/$NB_USER/.jupyter/
+  # rsync tutorials from skeleton directory if they don't exist
+  if [ ! -f /home/$NB_USER/tutorials/introduction.ipynb ]; then
+    echo "Syncing tutorial notebooks"
+    rsync -aq /usr/local/etc/skel/jupyter/tutorials /home/$NB_USER/
+  fi
+  echo "Trusting tutorial notebooks"
+  if [ $(id -u) == 0 ] ; then
+    sudo -u $NB_USER -E /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
+    chown -R $NB_UID /home/$NB_USER/.local
+  else
+    /opt/conda/bin/jupyter-trust /home/$NB_USER/tutorials/*.ipynb >/dev/null
   fi
 fi
 

@@ -23,7 +23,7 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 USER root
 
 # install packages that are nice for dev environment.
-RUN apt-get -qy update && apt-get install -qy htop less && \
+RUN apt-get -qy update && apt-get install -qy htop less rsync && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -36,12 +36,10 @@ RUN pip install kernda --no-cache && \
     kernda -o -y /usr/local/share/jupyter/kernels/python2/kernel.json && \
     pip uninstall kernda -y
 
-# add custom css/logo and tutorials
-COPY files/custom/ /home/$NB_USER/.jupyter/custom/
-COPY tutorials/ /home/$NB_USER/tutorials/
-
-# need to run this here so the fix-permissions script succeeds later
-RUN chown -R $NB_USER /home/$NB_USER
+# add custom css/logo and tutorials (use a skeleton directory in case a bind mount is used)
+COPY files/custom/ /usr/local/etc/skel/jupyter/.jupyter/custom/
+COPY tutorials/ /usr/local/etc/skel/jupyter/tutorials
+RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 
 USER $NB_USER
 
