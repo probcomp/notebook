@@ -23,7 +23,7 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 USER root
 
 # install packages that are nice for dev environment.
-RUN apt-get -qy update && apt-get install -qy htop less rsync && \
+RUN apt-get -qy update && apt-get install -qy curl htop less openjdk-8-jdk rsync && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
