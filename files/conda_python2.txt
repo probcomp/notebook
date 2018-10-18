@@ -30,5 +30,6 @@ six=1.10.*
 sqlalchemy=1.1*
 statsmodels=0.6.*
 sympy=1.0*
+tornado=4.5.3
 vincent=0.4.*
 xlrd
