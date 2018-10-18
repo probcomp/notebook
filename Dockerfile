@@ -1,5 +1,5 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
-FROM jupyter/minimal-notebook:92fe05d1e7e5
+FROM jupyter/minimal-notebook:6d2a05346196
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
@@ -37,7 +37,7 @@ RUN pip install kernda --no-cache && \
     pip uninstall kernda -y
 
 # add custom css/logo and tutorials (use a skeleton directory in case a bind mount is used)
-COPY files/custom/ /usr/local/etc/skel/jupyter/.jupyter/custom/
+COPY files/skel/dot_jupyter/ /usr/local/etc/skel/jupyter/.jupyter/
 COPY tutorials/ /usr/local/etc/skel/jupyter/tutorials
 RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 
@@ -64,4 +64,4 @@ COPY files/docker-entrypoint.sh /usr/local/bin/
 ENV PATH $CONDA_DIR/envs/python2/bin:$PATH
 
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
-CMD             ["start-notebook.sh"]
+CMD             ["start-notebook.sh", "--NotebookApp.custom_display_url=http://localhost:8888"]
