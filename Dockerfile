@@ -64,4 +64,4 @@ COPY files/docker-entrypoint.sh /usr/local/bin/
 ENV PATH $CONDA_DIR/envs/python2/bin:$PATH
 
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
-CMD             ["start-notebook.sh"]
+CMD             ["start-notebook.sh", "--NotebookApp.custom_display_url=http://localhost:8888"]
