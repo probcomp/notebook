@@ -1,5 +1,5 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
-FROM jupyter/minimal-notebook:92fe05d1e7e5
+FROM jupyter/minimal-notebook:f9e77e3ddd6f
 
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
