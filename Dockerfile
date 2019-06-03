@@ -1,11 +1,13 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
-FROM jupyter/minimal-notebook:f9e77e3ddd6f
-
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
+FROM jupyter/minimal-notebook:f9e77e3ddd6f
+
+ENV CLOJURE_VERSION 1.10.0.442
 
 # install conda-build into the root environment. useful for reproducing travis runs.
-RUN conda install --quiet --yes conda-build
+# also install java-jdk for clojure notebooks
+RUN conda install --quiet --yes -c bioconda conda-build java-jdk
 
 # Install Python 2 packages
 COPY files/conda_python2.txt /tmp/
@@ -23,9 +25,15 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 USER root
 
 # install packages that are nice for dev environment.
-RUN apt-get -qy update && apt-get install -qy htop less rsync && \
+RUN apt-get -qy update && apt-get install -qy curl htop less rsync && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# install clojure and lein
+RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh && \
+    curl -fsSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
+    chmod +x /usr/local/bin/lein && \
+    bash /tmp/linux-install.sh
 
 # Install Python 2 kernel spec globally to avoid permission problems when NB_UID
 # switching at runtime and to allow the notebook server running out of the root
@@ -43,6 +51,11 @@ RUN rsync -aq /home/$NB_USER/.cache /usr/local/etc/skel/jupyter/
 RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 
 USER $NB_USER
+
+# install clojupyter
+RUN git clone https://github.com/roryk/clojupyter /tmp/clojupyter && \
+    cd /tmp/clojupyter && \
+    make && make install
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
