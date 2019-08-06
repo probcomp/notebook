@@ -7,7 +7,7 @@ ENV CLOJURE_VERSION 1.10.0.442
 
 # install conda-build into the root environment. useful for reproducing travis runs.
 # also install java-jdk for clojure notebooks
-RUN conda install --quiet --yes -c bioconda conda-build java-jdk
+RUN conda install --quiet --yes -c bioconda conda=4.6.14 conda-build java-jdk
 
 # Install Python 2 packages
 COPY files/conda_python2.txt /tmp/
