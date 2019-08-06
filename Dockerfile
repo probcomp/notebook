@@ -4,10 +4,14 @@
 FROM jupyter/minimal-notebook:f9e77e3ddd6f
 
 ENV CLOJURE_VERSION 1.10.0.442
+ENV JULIA_VERSION 1.0.4
+ENV JULIA_PATH /usr/local/julia
+ENV JULIA_SHA256 bb9e33d95f47e703d9199f0358c038c61259e2ff9f3fd515c919729ace89443c
+ENV JULIA_URL https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 
 # install conda-build into the root environment. useful for reproducing travis runs.
 # also install java-jdk for clojure notebooks
-RUN conda install --quiet --yes -c bioconda conda-build java-jdk
+RUN conda install --quiet --yes -c bioconda conda=4.6.14 conda-build java-jdk
 
 # Install Python 2 packages
 COPY files/conda_python2.txt /tmp/
@@ -35,6 +39,12 @@ RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/lin
     chmod +x /usr/local/bin/lein && \
     bash /tmp/linux-install.sh
 
+# install julia
+RUN curl -fsSL -o /tmp/julia.tgz $JULIA_URL \
+    && echo "$JULIA_SHA256  /tmp/julia.tgz" | sha256sum -c - \
+    && mkdir "$JULIA_PATH" && tar -xzf /tmp/julia.tgz -C "$JULIA_PATH" --strip-components 1 \
+    && rm /tmp/julia.tgz
+
 # Install Python 2 kernel spec globally to avoid permission problems when NB_UID
 # switching at runtime and to allow the notebook server running out of the root
 # environment to find it. Also, activate the python2 environment upon kernel
@@ -57,6 +67,9 @@ RUN git clone https://github.com/roryk/clojupyter /tmp/clojupyter && \
     cd /tmp/clojupyter && \
     make && make install
 
+# install ijulia
+RUN $JULIA_PATH/bin/julia -E 'using Pkg; Pkg.add("IJulia")'
+
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     bash ~/.bash_it/install.sh --silent && \
@@ -75,7 +88,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c
 COPY files/docker-entrypoint.sh /usr/local/bin/
 
 # Make installing pip packages in child images more intuitive
-ENV PATH $CONDA_DIR/envs/python2/bin:$PATH
+ENV PATH $CONDA_DIR/envs/python2/bin:$JULIA_PATH/bin:$PATH
 
 ENTRYPOINT      ["tini", "--", "docker-entrypoint.sh"]
 CMD             ["start-notebook.sh"]
