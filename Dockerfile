@@ -26,9 +26,22 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 USER root
 
 # install packages that are nice for dev environment.
-RUN apt-get -qy update && apt-get install -qy curl gettext htop less libffi-dev rsync zlib1g-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get -qy update && apt-get install -qy \
+    curl \
+    gettext \
+    htop \
+    less \
+    libffi-dev \
+    libfontconfig1-dev \
+    libfreetype6-dev \
+    libharfbuzz-dev \
+    libpixman-1-dev \
+    libpng-dev \
+    pkg-config \
+    rsync \
+    zlib1g-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # install clojure and lein
 RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh && \
@@ -61,8 +74,8 @@ USER $NB_USER
 ##    rm -rf /tmp/IClojure
 
 # install julia deps
-##COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
-##RUN julia -E "using Pkg; Pkg.instantiate(); pkg\"precompile\""
+COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
+RUN julia -E "using Pkg; Pkg.instantiate(); pkg\"precompile\""
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
