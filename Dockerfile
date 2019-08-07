@@ -44,7 +44,7 @@ RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/lin
 # install julia
 RUN curl -fsSL -o /tmp/julia.tgz $JULIA_URL \
     && echo "$JULIA_SHA256  /tmp/julia.tgz" | sha256sum -c - \
-    && mkdir -p "$JULIA_PATH" && mkdir -p "JULIA_PKGDIR" && chown $NB_USER $JULIA_PKGDIR \
+    && mkdir -p "$JULIA_PATH" && mkdir -p "$JULIA_PKGDIR" && chown $NB_USER $JULIA_PKGDIR \
     && tar -xzf /tmp/julia.tgz -C "$JULIA_PATH" --strip-components 1 \
     && rm /tmp/julia.tgz
 
