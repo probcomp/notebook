@@ -7,6 +7,7 @@ ENV CLOJURE_VERSION 1.10.0.442
 ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
 ENV JULIA_VERSION 1.0.4
 ENV JULIA_PATH /usr/local/julia
+ENV JULIA_PKGDIR /opt/julia
 ENV JULIA_SHA256 bb9e33d95f47e703d9199f0358c038c61259e2ff9f3fd515c919729ace89443c
 ENV JULIA_URL https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-${JULIA_VERSION}-linux-x86_64.tar.gz
 
@@ -43,7 +44,8 @@ RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/lin
 # install julia
 RUN curl -fsSL -o /tmp/julia.tgz $JULIA_URL \
     && echo "$JULIA_SHA256  /tmp/julia.tgz" | sha256sum -c - \
-    && mkdir "$JULIA_PATH" && tar -xzf /tmp/julia.tgz -C "$JULIA_PATH" --strip-components 1 \
+    && mkdir -p "$JULIA_PATH" && mkdir -p "JULIA_PKGDIR" && chown $NB_USER $JULIA_PKGDIR \
+    && tar -xzf /tmp/julia.tgz -C "$JULIA_PATH" --strip-components 1 \
     && rm /tmp/julia.tgz
 
 # Install Python 2 kernel spec globally to avoid permission problems when NB_UID
@@ -71,8 +73,8 @@ RUN git clone https://github.com/HCADatalab/IClojure /tmp/IClojure && \
     rm -rf /tmp/IClojure
 
 # install julia deps, including ijulia
-COPY files/add_deps.jl /tmp/
-RUN $JULIA_PATH/bin/julia /tmp/add_deps.jl
+COPY files/*.toml $JULIA_PKGDIR/environments/v1.0/
+RUN $JULIA_PATH/bin/julia -E 'using Pkg; Pkg.instantiate()'
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
@@ -86,6 +88,7 @@ RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR && \
+    fix-permissions $JULIA_PKGDIR && \
     fix-permissions /home/$NB_USER
 
 # Add local files as late as possible to avoid cache busting
