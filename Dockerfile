@@ -61,8 +61,8 @@ USER $NB_USER
 ##    rm -rf /tmp/IClojure
 
 # install julia deps
-COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
-RUN julia -E "using Pkg; Pkg.instantiate(); pkg\"precompile\""
+##COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
+##RUN julia -E "using Pkg; Pkg.instantiate(); pkg\"precompile\""
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
