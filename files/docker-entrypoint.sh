@@ -4,6 +4,9 @@ set -e
 # activate python2 environment
 source activate python2
 
+# start julia with threads=cores
+export JULIA_NUM_THREADS=$(nproc)
+
 # only initialize if default command has not been overridden
 if [ $1 = "start-notebook.sh" ]; then
   if [ -n "$DEVELOP_REPOS" ]; then
