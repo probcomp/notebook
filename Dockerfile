@@ -67,11 +67,10 @@ RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 USER $NB_USER
 
 # install iclojure
-##RUN git clone https://github.com/HCADatalab/IClojure /tmp/IClojure && \
-##    cd /tmp/IClojure && \
-##    make && make install && \
-##    jupyter labextension install iclojure_extension && \
-##    rm -rf /tmp/IClojure
+RUN git clone https://github.com/HCADatalab/IClojure /opt/IClojure && \
+    cd /opt/IClojure && \
+    make && make install && \
+    jupyter labextension install iclojure_extension
 
 # install julia deps
 COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
