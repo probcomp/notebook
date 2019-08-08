@@ -1,7 +1,7 @@
 # jupyter project recommends pinning the base image: https://github.com/jupyter/docker-stacks#other-tips-and-known-issues
 # jupyter project recently removed support for python2, we'll recreate it using their commit as a guide
 # https://github.com/jupyter/docker-stacks/commit/32b3d2bec23bc46fab1ed324f04a0ad7a7c73747#commitcomment-24129620
-FROM jupyter/datascience-notebook:58169ec3cfd3
+FROM jupyter/datascience-notebook:41e066e5caa8
 
 ENV CLOJURE_VERSION 1.10.0.442
 ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
