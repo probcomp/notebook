@@ -25,18 +25,22 @@ RUN $CONDA_DIR/envs/python2/bin/python -c "import matplotlib.pyplot"
 
 USER root
 
-# install packages that are nice for dev environment.
+# install packages that are nice for dev environment, cairo build deps cribbed from: https://github.com/QuantEcon/docker/blob/master/all-julia/Dockerfile
 RUN apt-get -qy update && apt-get install -qy \
     curl \
     gettext \
     htop \
     less \
+    libacl1-dev \
+    libcairo2-dev \
     libffi-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
     libharfbuzz-dev \
+    libpango1.0-0 \
     libpixman-1-dev \
     libpng-dev \
+    libpoppler-dev \
     pkg-config \
     rsync \
     zlib1g-dev \
@@ -44,10 +48,10 @@ RUN apt-get -qy update && apt-get install -qy \
     && rm -rf /var/lib/apt/lists/*
 
 # install clojure and lein
-RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh && \
-    curl -fsSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
-    chmod +x /usr/local/bin/lein && \
-    bash /tmp/linux-install.sh
+##RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh && \
+##    curl -fsSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
+##    chmod +x /usr/local/bin/lein && \
+##    bash /tmp/linux-install.sh
 
 # Install Python 2 kernel spec globally to avoid permission problems when NB_UID
 # switching at runtime and to allow the notebook server running out of the root
@@ -67,14 +71,13 @@ RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 USER $NB_USER
 
 # install iclojure
-RUN git clone https://github.com/HCADatalab/IClojure /opt/IClojure && \
-    cd /opt/IClojure && \
-    make && make install && \
-    jupyter labextension install iclojure_extension
+##RUN git clone https://github.com/HCADatalab/IClojure /opt/IClojure && \
+##    cd /opt/IClojure && \
+##    make && make install && \
+##    jupyter labextension install iclojure_extension
 
 # install julia deps
-COPY files/*.toml $JULIA_DEPOT_PATH/environments/v1.1/
-RUN julia -E "using Pkg; Pkg.instantiate(); pkg\"precompile\""
+RUN julia -e "using Pkg; pkg\"add DSP DataStructures https://github.com/probcomp/Gen Luxor Parameters PyPlot Revise\"; pkg\"precompile\""
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \

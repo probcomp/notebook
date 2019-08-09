@@ -28,6 +28,11 @@ if [ $1 = "start-notebook.sh" ]; then
     done
   fi
 
+  # for installing julia packages when running the developer environment
+  if [ $(id -u) == 0 ] ; then
+    echo "Running chown -R ${NB_UID} /opt/julia"
+    chown -R $NB_UID /opt/julia &
+  fi
   # add the logo, etc.
   rsync -aq /usr/local/etc/skel/jupyter/.jupyter/custom /home/$NB_USER/.jupyter/
   # rsync tutorials from skeleton directory unless $SKIP_TUTORIAL_SYNC is set
