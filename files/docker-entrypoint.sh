@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-# activate python2 environment
-source activate python2
-
 # start julia with threads=cores
 export JULIA_NUM_THREADS=$(nproc)
 
@@ -13,7 +10,7 @@ if [ $1 = "start-notebook.sh" ]; then
     echo "Enabling develop on: $DEVELOP_REPOS"
     for repo in $DEVELOP_REPOS; do
       echo "  Uninstalling $repo conda package"
-      conda uninstall --quiet --yes $repo >/dev/null 2>&1
+      conda uninstall -n python2 --quiet --yes $repo >/dev/null 2>&1
       echo "  Creating $repo.egg-link"
       echo "/home/$NB_USER/$repo/build/lib"                   > /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
       echo "/home/$NB_USER/$repo/build/lib.linux-x86_64-2.7" >> /opt/conda/envs/python2/lib/python2.7/site-packages/$repo.egg-link
@@ -30,8 +27,8 @@ if [ $1 = "start-notebook.sh" ]; then
 
   # for installing julia packages when running the developer environment
   if [ $(id -u) == 0 ] ; then
-    echo "Running chown -R ${NB_UID} /opt/julia"
-    chown -R $NB_UID /opt/julia &
+    echo "Running chown -R ${NB_UID} /opt/julia (this will take a while)..."
+    chown -R $NB_UID /opt/julia
   fi
   # add the logo, etc.
   rsync -aq /usr/local/etc/skel/jupyter/.jupyter/custom /home/$NB_USER/.jupyter/
