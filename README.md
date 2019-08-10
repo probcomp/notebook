@@ -35,11 +35,11 @@ To make additional host directories available from inside the container, first `
 
 ### Increasing D4M Resources
 
-The default D4M resource limits are too low for the developer playground. It's recommended that you allocate at least 8GB of RAM and all CPU cores to D4M. Any unused resources will still be available to OSX.
+The default D4M resource limits are too low for the jupyter notebook. It's recommended that you allocate at least 8GB of RAM and all CPU cores to D4M. Any unused resources will still be available to OSX.
 
 <img src="https://github.com/probcomp/notebook/blob/master/files/resources.png" width="250">
 
-If you have sufficient system resources, allocate 32GB of RAM to D4M for optimal developer environment performance.
+If you have sufficient system resources, allocate 32GB of RAM to D4M for optimal notebook performance.
 
 <img src="https://github.com/probcomp/notebook/blob/master/files/resources_high.png" width="250">
 
