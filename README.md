@@ -24,7 +24,7 @@ __Method 2__: Using docker directly
 Or run the image directly:
 
 ```
-$ docker run -it --rm -p 8888:8888 probcomp/notebook
+$ docker run -p 8888:8888 probcomp/notebook
 ```
 
 ## Docker Tips
