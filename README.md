@@ -14,7 +14,7 @@ After cloning the repo, you can make use of the following directives:
 * `make up` -- start the notebook
 * `make down` -- stop the notebook
 * `make pull` -- pull the latest version of the image (try this first if you're having any issues)
-* `make bash` -- start a bash shell
+* `make bash` -- exec a bash shell inside an already running notebook container
 * `make ipython` -- start an ipython2 shell with access to probcomp python2 libraries
 * `make ipython3` -- start an ipython3 shell with access to the default `jupyter/datascience-notebook` python3 libraries
 * `make julia` -- start a julia shell
