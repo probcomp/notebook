@@ -1,0 +1,6 @@
+version: "3"
+
+services:
+  notebook:
+    volumes:
+      - /Users/Me/notebooks:/home/jovyan/notebooks:rw

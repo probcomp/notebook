@@ -29,12 +29,16 @@ bash:
 
 .PHONY: ipython
 ipython:
-				@docker-compose -p ${USER} exec notebook bash -c "docker-entrypoint.sh /opt/conda/envs/python2/bin/ipython"
+				@docker-compose -p ${USER} run --rm notebook bash -c "docker-entrypoint.sh /opt/conda/envs/python2/bin/ipython"
+
+.PHONY: ipython2
+ipython2:
+				@docker-compose -p ${USER} run --rm notebook bash -c "docker-entrypoint.sh /opt/conda/envs/python2/bin/ipython"
 
 .PHONY: ipython3
 ipython3:
-				@docker-compose -p ${USER} exec notebook ipython3
+				@docker-compose -p ${USER} run --rm notebook ipython3
 
 .PHONY: julia
 julia:
-				@docker-compose -p ${USER} exec notebook bash -c "docker-entrypoint.sh julia"
+				@docker-compose -p ${USER} run --rm notebook bash -c "docker-entrypoint.sh julia"
