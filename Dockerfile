@@ -6,9 +6,9 @@ FROM jupyter/datascience-notebook:41e066e5caa8
 ENV CLOJURE_VERSION 1.10.0.442
 ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
 
-# install conda-build into the root environment. useful for reproducing travis runs.
-# also install java-jdk for clojure notebooks
-RUN conda install --quiet --yes -c bioconda conda=4.6.14 conda-build java-jdk
+## uncomment to enable iclojure support
+##RUN conda install --quiet --yes -c bioconda conda=4.6.14 conda-build java-jdk
+RUN conda install --quiet --yes conda=4.6.14 conda-build
 
 # Install Python 2 packages
 COPY files/conda_python2.txt /tmp/
@@ -47,7 +47,7 @@ RUN apt-get -qy update && apt-get install -qy \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# install clojure and lein
+## uncomment to enable iclojure support
 ##RUN curl -fsSL -o /tmp/linux-install.sh https://download.clojure.org/install/linux-install-${CLOJURE_VERSION}.sh && \
 ##    curl -fsSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && \
 ##    chmod +x /usr/local/bin/lein && \
@@ -70,7 +70,7 @@ RUN chown -R $NB_USER /usr/local/etc/skel/jupyter
 
 USER $NB_USER
 
-# install iclojure
+## uncomment to enable iclojure support
 ##RUN git clone https://github.com/HCADatalab/IClojure /opt/IClojure && \
 ##    cd /opt/IClojure && \
 ##    make && make install && \
