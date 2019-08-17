@@ -84,6 +84,29 @@ RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
     bash ~/.bash_it/install.sh --silent && \
     echo "source activate python2\nalias pytest=py.test\nexport SCM_CHECK=false" >> /home/$NB_USER/.bashrc
 
+# uninstall R packages to reduce image size
+RUN conda uninstall --quiet --yes \
+    'r-base' \
+    'r-caret' \
+    'r-crayon' \
+    'r-devtools' \
+    'r-forecast' \
+    'r-hexbin' \
+    'r-htmltools' \
+    'r-htmlwidgets' \
+    'r-irkernel' \
+    'r-nycflights13' \
+    'r-plyr' \
+    'r-randomforest' \
+    'r-rcurl' \
+    'r-reshape2' \
+    'r-rmarkdown' \
+    'r-rsqlite' \
+    'r-shiny' \
+    'r-sparklyr' \
+    'r-tidyverse' \
+    'rpy2'
+
 # install the probcomp libraries, fix permissions
 COPY files/conda_probcomp.txt /tmp/
 RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
