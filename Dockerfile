@@ -109,7 +109,7 @@ RUN conda uninstall --quiet --yes \
 
 # install the probcomp libraries, fix permissions
 COPY files/conda_probcomp.txt /tmp/
-RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest \
+RUN conda install -n python2 --quiet --yes -c probcomp -c cidermole -c fritzo -c ursusest -c anaconda \
     --file /tmp/conda_probcomp.txt && \
     conda remove -n python2 --quiet --yes --force qt pyqt && \
     conda clean -tipsy && \
