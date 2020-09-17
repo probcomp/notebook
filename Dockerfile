@@ -77,7 +77,7 @@ USER $NB_USER
 ##    jupyter labextension install iclojure_extension
 
 # install julia deps
-RUN julia -e "using Pkg; pkg\"add DSP DataStructures https://github.com/probcomp/Gen Luxor Parameters PyPlot Revise\"; pkg\"precompile\""
+#RUN julia -e "using Pkg; pkg\"add DSP DataStructures https://github.com/probcomp/Gen Luxor Parameters PyPlot Revise\"; pkg\"precompile\""
 
 # bash improvements for developer environment
 RUN git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && \
